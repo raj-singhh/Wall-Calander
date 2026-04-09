@@ -1,0 +1,324 @@
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navigationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.navigationButton:hover {
+  background-color: var(--border-light);
+}
+
+.yearMonthSelectors {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.select {
+  padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1em;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.select:hover {
+  border-color: var(--accent-color);
+}
+
+/* Dark mode handling for selects */
+@media (prefers-color-scheme: dark) {
+  .select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f8fafc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  }
+}
+
+.optionsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modeToggle {
+  display: flex;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+}
+
+.modeButton {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.modeButton.active {
+  background-color: var(--bg-primary);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Calendar Grid */
+.calendarContent {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.dayOfWeek {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding-bottom: 0.5rem;
+}
+
+.dayCell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.dayCell:hover:not(.empty) {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-light);
+}
+
+.dayNumber {
+  z-index: 2;
+}
+
+.hasNotesDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  margin-top: 4px;
+}
+
+/* States */
+.empty {
+  visibility: hidden;
+}
+
+.isToday {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+/* Selection States */
+.selectedSingle {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  box-shadow: var(--shadow-md);
+}
+
+.selectedRangeStart {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.selectedRangeEnd {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.selectedRangeMiddle {
+  background-color: var(--selection-bg) !important;
+  border-radius: 0;
+  color: var(--text-primary); /* Fixed dark mode visibility for range middle */
+}
+
+/* Notes Section */
+.notesSection {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.notesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.notesHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.addNoteButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-soft);
+  color: var(--accent-hover);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.addNoteButton:hover {
+  background-color: var(--selection-bg);
+}
+
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.noteItem {
+  background-color: var(--bg-tertiary);
+  padding: 1rem;
+  border-left: 4px solid var(--accent-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.noteContent {
+  flex: 1;
+}
+
+.noteDate {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.25rem;
+}
+
+.noteText {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.deleteNote {
+  color: var(--text-tertiary);
+  padding: 0.25rem;
+}
+
+.deleteNote:hover {
+  color: var(--danger-color);
+}
+
+.newNoteForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.noteTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.noteTextarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.noteActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.saveButton, .cancelButton {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.saveButton {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.saveButton:hover {
+  background-color: var(--accent-hover);
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+.cancelButton:hover {
+  background-color: var(--bg-tertiary);
+}
